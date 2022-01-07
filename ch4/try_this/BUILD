@@ -5,5 +5,6 @@ cc_binary(
       "//:stdlib",
       "@libcurl//:lib",
       "@com_github_nlohmann_json//:json",
+      "@boost//:boost",
     ],
 )

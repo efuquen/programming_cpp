@@ -26,13 +26,23 @@ json get_conversion_rates() {
   string response_string;
   auto curl = curl_easy_init();
   if (curl) {
-    auto api_key = read_file(string(getenv("HOME")).append("/.freecurrencyapi.key"));
-    boost::trim_right(api_key);
-
+    auto api_key = boost::trim_right(read_file(string(getenv("HOME")).append("/.freecurrencyapi.key")));
+    auto api_key_hardcode = "76916980-6f80-11ec-b2c3-d73af227a51b";
+    cout << api_key;
+    cout << api_key_hardcode;
+    cout << "\n\n" << strlen(api_key.c_str()) << "\n";
+    cout << "\n\n" << strlen(api_key_hardcode) << "\n";
     auto api_url = string("https://freecurrencyapi.net/api/v2/latest?apikey=");
+    auto api_url_hardcode = string("https://freecurrencyapi.net/api/v2/latest?apikey=");
     api_url.append(api_key);
+    api_url_hardcode.append(api_key_hardcode);
+    cout << api_url.c_str() << "\n"; 
+    cout << api_url_hardcode.c_str() << "\n"; 
+    cout << "\n\n" << sizeof(api_url.c_str()) << "\n";
+    cout << "\n\n" << sizeof(api_url_hardcode.c_str()) << "\n";
 
-    // curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
+
+    curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
     curl_easy_setopt(curl, CURLOPT_URL, api_url.c_str());
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writeFunction);
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response_string);
@@ -41,12 +51,14 @@ json get_conversion_rates() {
     curl_easy_cleanup(curl);
     curl = NULL;
 
+    cout << "res: " << res << "\n";
+    cout << "reponse_string: " << response_string << "\n";
     return json::parse(response_string)["data"];
   }
 }
 
 int main() {
   auto j = get_conversion_rates();
-  cout << "j: " << j;
+  cout << "\n\nj: " << j;
   return 0;	
 }

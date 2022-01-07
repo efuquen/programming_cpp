@@ -6,6 +6,12 @@ new_local_repository(
     build_file = "libcurl.BUILD"
 )
 
+new_local_repository(
+    name = "boost",
+    build_file = "boost.BUILD",
+    path = "/usr/lib/x86_64-linux-gnu",
+)
+
 http_archive(
     name = "com_github_nlohmann_json",
     build_file = "json.BUILD",
