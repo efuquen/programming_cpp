@@ -52,14 +52,19 @@ int main() {
   cin >> amount >> currency;
 
   auto j = get_conversion_rates();
-  if (currency == 'y') {
-      cout << amount << " yen is " << j["JPY"].get<double>() * amount << " dollars.\n";;
-  } else if (currency == 'k') {
-      cout << amount << " kroner is " << j["NOK"].get<double>() * amount << " dollars.\n";;
-  } else if (currency == 'p') {
-      cout << amount << " pound is " << j["GBP"].get<double>() * amount << " dollars.\n";
-  } else {
-      cout << currency << " is not a handled currency.\n";
+  switch (currency) {
+      case 'y':
+          cout << amount << " yen is " << j["JPY"].get<double>() * amount << " dollars.\n";
+          break;
+      case 'k':
+          cout << amount << " kroner is " << j["NOK"].get<double>() * amount << " dollars.\n";
+          break;
+      case 'p':
+          cout << amount << " pound is " << j["GBP"].get<double>() * amount << " dollars.\n";
+          break;
+      default:
+          cout << currency << " is not a handled currency.\n";
+          break;
   }
   return 0;	
 }
