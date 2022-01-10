@@ -37,16 +37,29 @@ json get_conversion_rates() {
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writeFunction);
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response_string);
     
-    auto res = curl_easy_perform(curl);
+    curl_easy_perform(curl);
     curl_easy_cleanup(curl);
-    curl = NULL;
+    curl = nullptr;
 
     return json::parse(response_string)["data"];
   }
 }
 
 int main() {
+  double amount = 1.00;
+  char currency = '$';
+  cout << "Please enter an amount followed by a currency ('y' for yen, 'k' for kroner, 'p' for pounds):\n";
+  cin >> amount >> currency;
+
   auto j = get_conversion_rates();
-  cout << "j: " << j;
+  if (currency == 'y') {
+      cout << amount << " yen is " << j["JPY"].get<double>() * amount << " dollars.\n";;
+  } else if (currency == 'k') {
+      cout << amount << " kroner is " << j["NOK"].get<double>() * amount << " dollars.\n";;
+  } else if (currency == 'p') {
+      cout << amount << " pound is " << j["GBP"].get<double>() * amount << " dollars.\n";
+  } else {
+      cout << currency << " is not a handled currency.\n";
+  }
   return 0;	
 }
