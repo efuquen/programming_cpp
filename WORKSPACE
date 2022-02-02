@@ -12,6 +12,7 @@ http_archive(
 )
 
 load("@com_github_nelhage_rules_boost//:boost/boost.bzl", "boost_deps")
+
 boost_deps()
 
 http_archive(
@@ -25,24 +26,25 @@ http_archive(
 http_archive(
     name = "com_github_poco",
     build_file = "poco.BUILD",
+    sha256 = "2412a5819a239ff2ee58f81033bcc39c40460d7a8b330013a687c8c0bd2b4ac0",
     strip_prefix = "poco-poco-1.11.1-release",
-    urls = ["https://github.com/pocoproject/poco/archive/poco-1.11.1-release.tar.gz"]
+    urls = ["https://github.com/pocoproject/poco/archive/poco-1.11.1-release.tar.gz"],
 )
 
 http_archive(
-  name = "com_google_absl",
-  urls = ["https://github.com/abseil/abseil-cpp/archive/98eb410c93ad059f9bba1bf43f5bb916fc92a5ea.zip"],
-  strip_prefix = "abseil-cpp-98eb410c93ad059f9bba1bf43f5bb916fc92a5ea",
+    name = "com_google_absl",
+    strip_prefix = "abseil-cpp-98eb410c93ad059f9bba1bf43f5bb916fc92a5ea",
+    urls = ["https://github.com/abseil/abseil-cpp/archive/98eb410c93ad059f9bba1bf43f5bb916fc92a5ea.zip"],
 )
 
 http_archive(
-  name = "rules_cc",
-  urls = ["https://github.com/bazelbuild/rules_cc/archive/262ebec3c2296296526740db4aefce68c80de7fa.zip"],
-  strip_prefix = "rules_cc-262ebec3c2296296526740db4aefce68c80de7fa",
+    name = "rules_cc",
+    strip_prefix = "rules_cc-262ebec3c2296296526740db4aefce68c80de7fa",
+    urls = ["https://github.com/bazelbuild/rules_cc/archive/262ebec3c2296296526740db4aefce68c80de7fa.zip"],
 )
 
 new_local_repository(
     name = "libcurl",
+    build_file = "libcurl.BUILD",
     path = "/usr/lib/x86_64-linux-gnu",
-    build_file = "libcurl.BUILD"
 )

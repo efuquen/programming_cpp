@@ -1,6 +1,7 @@
 cc_binary(
     name = "currency_converter",
     srcs = ["currency_converter.cpp"],
+    linkstatic = True,
     deps = [
         "//:stdlib",
         "@boost//:algorithm",
