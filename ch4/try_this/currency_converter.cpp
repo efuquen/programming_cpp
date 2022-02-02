@@ -6,7 +6,18 @@
 #include <curl/curl.h>
 #include <nlohmann/json.hpp>
 
+#include "Poco/Net/HTTPClientSession.h"
+#include "Poco/Net/HTTPRequest.h"
+#include "Poco/Net/HTTPResponse.h"
+#include "Poco/URI.h"
+
 using namespace std;
+
+using Poco::URI;
+using Poco::Net::HTTPClientSession;
+using Poco::Net::HTTPMessage;
+using Poco::Net::HTTPRequest;
+using Poco::Net::HTTPResponse;
 
 using json = nlohmann::json;
 
@@ -23,26 +34,23 @@ string read_file(const string& filepath) {
 }
 
 json get_conversion_rates() {
-  string response_string;
-  auto curl = curl_easy_init();
-  if (curl) {
     auto api_key = read_file(string(getenv("HOME")).append("/.freecurrencyapi.key"));
     boost::trim_right(api_key);
 
     auto api_url = string("https://freecurrencyapi.net/api/v2/latest?apikey=");
     api_url.append(api_key);
+    URI uri(api_url);
+    std::string path(uri.getPathAndQuery());
 
-    // curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
-    curl_easy_setopt(curl, CURLOPT_URL, api_url.c_str());
-    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writeFunction);
-    curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response_string);
-    
-    curl_easy_perform(curl);
-    curl_easy_cleanup(curl);
-    curl = nullptr;
+    HTTPClientSession session(uri.getHost(), uri.getPort());
+    HTTPRequest request(HTTPRequest::HTTP_GET, path, HTTPMessage::HTTP_1_1);
+    HTTPResponse response;
+
+    session.sendRequest(request);
+    std::istream& rs = session.receiveResponse(response);
+    std::string response_string(std::istreambuf_iterator<char>(rs), {});
 
     return json::parse(response_string)["data"];
-  }
 }
 
 int main() {

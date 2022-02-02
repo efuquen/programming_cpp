@@ -3,9 +3,10 @@ cc_binary(
     srcs = ["currency_converter.cpp"],
     deps = [
         "//:stdlib",
-        "@boost",
+        "@boost//:algorithm",
         "@com_github_nlohmann_json//:json",
-        "@libcurl//:lib",
+        "@com_github_poco//:poco-core",
+        "@com_github_poco//:poco-net",
     ],
 )
 
