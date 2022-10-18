@@ -8,6 +8,7 @@ cc_binary(
         "@com_github_nlohmann_json//:json",
         "@com_github_poco//:poco-core",
         "@com_github_poco//:poco-net",
+        "@com_github_poco//:poco-net-openssl",
     ],
 )
 

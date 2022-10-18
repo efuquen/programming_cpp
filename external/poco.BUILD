@@ -11,6 +11,32 @@ cc_library(
 )
 
 cc_library(
+    name = "poco-util",
+    srcs = glob(["Util/src/*.cpp"],
+        exclude = ["Util/src/Win*"]
+    ),
+    hdrs = glob(["Util/include/Poco/Util/*.h"]),
+    strip_include_prefix = "Util/include/",
+    deps = [":poco-core"],
+)
+
+cc_library(
+    name = "poco-crypto",
+    srcs = glob(["Crypto/src/*.cpp"]),
+    hdrs = glob(["Crypto/include/Poco/Crypto/*.h"]),
+    strip_include_prefix = "Crypto/include/",
+    deps = [":poco-core"],
+)
+
+cc_library(
+    name = "poco-net-openssl",
+    srcs = glob(["NetSSL_OpenSSL/src/*.cpp"]),
+    hdrs = glob(["NetSSL_OpenSSL/include/Poco/Net/*.h"]),
+    strip_include_prefix = "NetSSL_OpenSSL/include/",
+    deps = [":poco-net", ":poco-crypto", ":poco-util"],
+)
+
+cc_library(
     name = "poco-core",
     srcs = glob(
         ["Foundation/src/*.cc", "Foundation/src/*.cpp", "Foundation/src/*.h", "Foundation/src/*.c"],

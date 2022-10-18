@@ -6,7 +6,7 @@
 #include <curl/curl.h>
 #include <nlohmann/json.hpp>
 
-#include "Poco/Net/HTTPClientSession.h"
+#include "Poco/Net/HTTPSClientSession.h"
 #include "Poco/Net/HTTPRequest.h"
 #include "Poco/Net/HTTPResponse.h"
 #include "Poco/URI.h"
@@ -14,7 +14,7 @@
 using namespace std;
 
 using Poco::URI;
-using Poco::Net::HTTPClientSession;
+using Poco::Net::HTTPSClientSession;
 using Poco::Net::HTTPMessage;
 using Poco::Net::HTTPRequest;
 using Poco::Net::HTTPResponse;
@@ -42,7 +42,7 @@ json get_conversion_rates() {
     URI uri(api_url);
     std::string path(uri.getPathAndQuery());
 
-    HTTPClientSession session(uri.getHost(), uri.getPort());
+    HTTPSClientSession session(uri.getHost(), uri.getPort());
     HTTPRequest request(HTTPRequest::HTTP_GET, path, HTTPMessage::HTTP_1_1);
     HTTPResponse response;
 
@@ -50,7 +50,12 @@ json get_conversion_rates() {
     std::istream& rs = session.receiveResponse(response);
     std::string response_string(std::istreambuf_iterator<char>(rs), {});
 
-    return json::parse(response_string)["data"];
+    try {
+        return json::parse(response_string)["data"];
+    } catch(json::exception& e) {
+        std::cout << "JSON error: " << e.what() << '\n';
+        std::cout << "HTTP response: " << response_string << '\n';
+    }
 }
 
 int main() {
