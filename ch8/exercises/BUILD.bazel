@@ -1,0 +1,20 @@
+cc_library(
+    name = "print",
+    srcs = ["print.cpp"],
+    hdrs = ["print.h"],
+)
+
+cc_library(
+    name = "fib",
+    srcs = ["fib.cpp"],
+    hdrs = ["fib.h"],
+)
+
+cc_binary(
+    name = "print_fib",
+    srcs = ["print_fib.cpp"],
+    deps = [
+        ":fib",
+        ":print",
+    ],
+)
